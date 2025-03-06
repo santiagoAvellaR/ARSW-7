@@ -1,7 +1,7 @@
 import type { MetaFunction } from "@remix-run/node";
 import {HeroUIProvider} from "@heroui/system";
 import DrawingCanvas from "~/components/DrawingCanvasProps";
-
+import Header from "~/components/Header";
 
 export const meta: MetaFunction = () => {
   return [
@@ -17,7 +17,7 @@ export default function Index() {
       <div className="flex flex-col h-screen">
         {/* Header */}
         <header className="bg-gray-200 p-4">
-          <h1 className="text-xl font-bold">Header</h1>
+        <Header />
         </header>
 
         {/* Body con dos columnas */}
@@ -33,7 +33,7 @@ export default function Index() {
           {/* Parte Derecha */}
           <section className="w-1/2 bg-blue-200 p-4">
             <p>Contenido Derecho</p>
-            <DrawingCanvas></DrawingCanvas>
+            <DrawingCanvas/>
           </section>
         </main>
 
