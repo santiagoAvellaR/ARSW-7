@@ -8,14 +8,17 @@ importers:
 
   .:
     dependencies:
+      '@fontsource/caveat':
+        specifier: ^5.2.5
+        version: 5.2.5
       '@heroui/navbar':
-        specifier: ^2.2.13
+        specifier: 2.2.13
         version: 2.2.13(@heroui/system@2.4.11(@heroui/theme@2.4.11(tailwindcss@3.4.4))(framer-motion@12.4.10(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@heroui/theme@2.4.11(tailwindcss@3.4.4))(framer-motion@12.4.10(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@heroui/system':
-        specifier: ^2.4.11
+        specifier: 2.4.11
         version: 2.4.11(@heroui/theme@2.4.11(tailwindcss@3.4.4))(framer-motion@12.4.10(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@heroui/theme':
-        specifier: ^2.4.11
+        specifier: 2.4.11
         version: 2.4.11(tailwindcss@3.4.4)
       '@remix-run/node':
         specifier: 2.16.0
@@ -30,7 +33,7 @@ importers:
         specifier: 1.8.1
         version: 1.8.1
       framer-motion:
-        specifier: ^12.4.10
+        specifier: 12.4.10
         version: 12.4.10(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       isbot:
         specifier: 4.1.0
@@ -679,6 +682,9 @@ packages:
   '@eslint/js@8.38.0':
     resolution: {integrity: sha512-IoD2MfUnOV58ghIHCiil01PcohxjbYR/qCxsoC+xNgUwh1EY8jOOrYmu3d3a71+tJJ23uscEV4X2HJWMsPJu4g==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+
+  '@fontsource/caveat@5.2.5':
+    resolution: {integrity: sha512-h3WGWCDavAp9PPPlzSdhauEma9Cbb8L4Gf1olp67/OW91dI/JOzuK7kYYG3HN5DI9yKQ8s6mN1ZsGoNQLVhNeQ==}
 
   '@formatjs/ecma402-abstract@2.3.3':
     resolution: {integrity: sha512-pJT1OkhplSmvvr6i3CWTPvC/FGC06MbN5TNBfRO6Ox62AEz90eMq+dVvtX9Bl3jxCEkS0tATzDarRZuOLw7oFg==}
@@ -4414,6 +4420,8 @@ snapshots:
       - supports-color
 
   '@eslint/js@8.38.0': {}
+
+  '@fontsource/caveat@5.2.5': {}
 
   '@formatjs/ecma402-abstract@2.3.3':
     dependencies:

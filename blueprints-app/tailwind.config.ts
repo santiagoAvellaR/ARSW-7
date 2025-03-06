@@ -1,10 +1,10 @@
 import type { Config } from "tailwindcss";
-
 export default {
   content: ["./app/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
       fontFamily: {
+        caveat: ["Caveat", "cursive"], // Cambié "caveats" a "caveat"
         sans: [
           "Inter",
           "ui-sans-serif",

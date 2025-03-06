@@ -1,6 +1,6 @@
 import type { MetaFunction } from "@remix-run/node";
 import {HeroUIProvider} from "@heroui/system";
-import DrawingCanvas from "~/components/ResponsiveCanvas";
+import ResponsiveCanvas from "~/components/ResponsiveCanvas";
 import Header from "~/components/Header";
 
 export const meta: MetaFunction = () => {
