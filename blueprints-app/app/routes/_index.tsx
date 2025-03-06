@@ -1,5 +1,6 @@
 import type { MetaFunction } from "@remix-run/node";
 import {HeroUIProvider} from "@heroui/system";
+import DrawingCanvas from "~/components/DrawingCanvasProps";
 
 
 export const meta: MetaFunction = () => {
@@ -32,6 +33,7 @@ export default function Index() {
           {/* Parte Derecha */}
           <section className="w-1/2 bg-blue-200 p-4">
             <p>Contenido Derecho</p>
+            <DrawingCanvas></DrawingCanvas>
           </section>
         </main>
 
