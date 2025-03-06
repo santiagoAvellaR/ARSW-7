@@ -1,41 +1,41 @@
-// app/components/DrawingCanvas.tsx
-
 import React, { useRef, useState, useEffect } from "react";
 
-interface DrawingCanvasProps {
-  width?: number;
-  height?: number;
+interface ResponsiveCanvasProps {
+  // Resolución "interna" del canvas (puedes ajustarla según tu gusto)
+  internalWidth?: number;
+  internalHeight?: number;
+
   // Callback opcional para cuando el usuario guarde el dibujo
   onSave?: (dataUrl: string) => void;
-  // Opcional: dataUrl de un dibujo guardado, para re-pintarlo
+
+  // DataURL de un dibujo guardado, para re-pintarlo
   initialDrawing?: string;
 }
 
-const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
-  width = 500,
-  height = 300,
+const ResponsiveCanvas: React.FC<ResponsiveCanvasProps> = ({
+  internalWidth = 800,
+  internalHeight = 600,
   onSave,
   initialDrawing
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [isDrawing, setIsDrawing] = useState(false);
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
+  const [isDrawing, setIsDrawing] = useState(false);
 
-  // 1. Obtener el contexto 2D del canvas al montar el componente
+  // 1. Inicializamos el contexto
   useEffect(() => {
     if (canvasRef.current) {
       const context = canvasRef.current.getContext("2d");
       if (context) {
-        // Ajustamos algunos estilos de línea (grosor, color, etc.)
         context.lineWidth = 2;
         context.lineCap = "round";
-        context.strokeStyle = "#000000";
+        context.strokeStyle = "#000";
         setCtx(context);
       }
     }
   }, []);
 
-  // 2. Cargar un dibujo inicial (si lo hay) al montar
+  // 2. Pintar un dibujo inicial (si viene por props)
   useEffect(() => {
     if (initialDrawing && ctx) {
       const image = new Image();
@@ -46,30 +46,41 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
     }
   }, [initialDrawing, ctx]);
 
-  // 3. Función que inicia el trazo
+  // Función auxiliar para obtener coords ajustadas al escalado
+  const getRelativeCoords = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!canvasRef.current) return { x: 0, y: 0 };
+    const rect = canvasRef.current.getBoundingClientRect();
+    // Factor de escala entre el tamaño "interno" y el tamaño "visual"
+    const scaleX = canvasRef.current.width / rect.width;
+    const scaleY = canvasRef.current.height / rect.height;
+
+    return {
+      x: (e.clientX - rect.left) * scaleX,
+      y: (e.clientY - rect.top) * scaleY,
+    };
+  };
+
+  // 3. Inicio de trazo
   const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!ctx) return;
     setIsDrawing(true);
 
-    // Coordenadas relativas dentro del canvas
-    const { offsetX, offsetY } = e.nativeEvent;
-    // Arrancamos el path y movemos el "lápiz" a la posición inicial
+    const { x, y } = getRelativeCoords(e);
     ctx.beginPath();
-    ctx.moveTo(offsetX, offsetY);
+    ctx.moveTo(x, y);
   };
 
-  // 4. Función que dibuja mientras se mueve el mouse
+  // 4. Dibujo continuo
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!isDrawing || !ctx) return;
-    const { offsetX, offsetY } = e.nativeEvent;
-    ctx.lineTo(offsetX, offsetY);
+    const { x, y } = getRelativeCoords(e);
+    ctx.lineTo(x, y);
     ctx.stroke();
   };
 
-  // 5. Función que termina el trazo
+  // 5. Fin del trazo
   const handleMouseUp = () => {
     setIsDrawing(false);
-    // Cerramos el path (opcional)
     ctx?.closePath();
   };
 
@@ -80,23 +91,29 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
     onSave?.(dataUrl);
   };
 
-  // 7. Limpiar el canvas (opcional)
+  // 7. Limpiar el lienzo
   const handleClear = () => {
     if (!ctx || !canvasRef.current) return;
     ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
   };
 
   return (
-    <div>
+    <div style={{ width: "100%", maxWidth: 800 /* o lo que desees */ }}>
       <canvas
         ref={canvasRef}
-        width={width}
-        height={height}
-        style={{ border: "1px solid #ccc", cursor: "crosshair" }}
+        // El "tamaño interno" del canvas (resolución)
+        width={internalWidth}
+        height={internalHeight}
+        // Escalado visual: ancho completo, alto automático
+        style={{ 
+          width: "100%", 
+          height: "auto", 
+          border: "1px solid #ccc", 
+          cursor: "crosshair" 
+        }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
-        // Para usuarios que arrastran el mouse fuera del canvas
         onMouseLeave={() => setIsDrawing(false)}
       />
 
@@ -108,4 +125,4 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
   );
 };
 
-export default DrawingCanvas;
+export default ResponsiveCanvas;
