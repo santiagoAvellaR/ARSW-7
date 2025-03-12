@@ -1,6 +1,11 @@
 import type { Config } from "tailwindcss";
+import { heroui } from "@heroui/react";
 export default {
-  content: ["./app/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}"],
+  content: [
+    "./node_modules/@heroui/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}",
+    "./app/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}",
+  ]
+  ,
   theme: {
     extend: {
       fontFamily: {
@@ -18,5 +23,9 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    heroui({
+      defaultTheme: "light",
+    })
+  ],
 } satisfies Config;

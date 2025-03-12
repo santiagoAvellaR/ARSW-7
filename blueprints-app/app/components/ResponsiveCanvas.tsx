@@ -1,4 +1,6 @@
-import React, { useRef, useState, useEffect } from "react";
+import { Button } from "@heroui/button";
+import type React from "react";
+import { useRef, useState, useEffect } from "react";
 
 interface ResponsiveCanvasProps {
   // Resolución "interna" del canvas (puedes ajustarla según tu gusto)
@@ -98,7 +100,7 @@ const ResponsiveCanvas: React.FC<ResponsiveCanvasProps> = ({
   };
 
   return (
-    <div style={{ width: "100%", maxWidth: 800 /* o lo que desees */ }}>
+    <div style={{ width: "100%", maxWidth: '40rem' /* o lo que desees */ }}>
       <canvas
         ref={canvasRef}
         // El "tamaño interno" del canvas (resolución)
@@ -117,9 +119,9 @@ const ResponsiveCanvas: React.FC<ResponsiveCanvasProps> = ({
         onMouseLeave={() => setIsDrawing(false)}
       />
 
-      <div style={{ marginTop: 10 }}>
-        <button onClick={handleSave}>Guardar</button>
-        <button onClick={handleClear}>Limpiar</button>
+      <div className="mt-5 flex gap-[2rem]">
+        <Button color='primary' variant='shadow' onPress={handleSave}>Guardar</Button>
+        <Button color='primary' variant='shadow' onPress={handleClear}>Limpiar</Button>
       </div>
     </div>
   );

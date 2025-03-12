@@ -12,8 +12,7 @@
   },
   "dependencies": {
     "@fontsource/caveat": "5.2.5",
-    "@heroui/navbar": "2.2.13",
-    "@heroui/system": "2.4.11",
+    "@heroui/react": "2.7.5",
     "@heroui/theme": "2.4.11",
     "@remix-run/node": "2.16.0",
     "@remix-run/react": "2.16.0",
