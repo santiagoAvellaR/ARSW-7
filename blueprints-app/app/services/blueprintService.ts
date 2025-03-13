@@ -16,7 +16,6 @@ const API_URL = "http://localhost:8080/api/blueprints";
 
 // Función para obtener un Blueprint usando jQuery AJAX
 export function fetchBlueprint(author: string, bpname: string): Promise<Blueprint> {
-    console.log(`${API_URL}/${author}/${bpname}`);
     return new Promise((resolve, reject) => {
         $.ajax({
             url: `${API_URL}/${author}/${bpname}`,
