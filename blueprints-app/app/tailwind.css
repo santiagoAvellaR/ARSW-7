@@ -4,8 +4,7 @@
 
 html,
 body {
-  @apply bg-white dark:bg-gray-950;
-
+  @apply bg-[rgb(165,199,255)];  /*Azul bonito*/
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
   }
