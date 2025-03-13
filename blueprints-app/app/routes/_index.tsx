@@ -39,7 +39,6 @@ export default function Index() {
         </div>
       </section>
       <section className="bg-blue-100 p-4 sm:p-2">
-        <p>Contenido Derecho</p>
         <ResponsiveCanvas ref={canvasRef} />
       </section>
     </div>

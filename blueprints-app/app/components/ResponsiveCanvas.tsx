@@ -76,17 +76,23 @@ const ResponsiveCanvas = forwardRef<ResponsiveCanvasRef, ResponsiveCanvasProps>(
           if (blueprint.points.length > 0) {
             ctx.beginPath();
             ctx.moveTo(blueprint.points[0].x, blueprint.points[0].y);
-            // Dibuja línea recta entre cada punto (uno a uno)
             blueprint.points.forEach(({ x, y }) => {
               ctx.lineTo(x, y);
             });
             ctx.stroke();
             ctx.closePath();
+            blueprint.points.forEach(({ x, y }) => {
+              ctx.beginPath();
+              ctx.arc(x, y, 3, 0, 2 * Math.PI);
+              ctx.fill();
+              ctx.closePath();
+            });
           }
         } catch (error) {
           console.error("Error loading blueprint:", error);
         }
       };
+      
 
       // Exponemos la función updateCanvas para que otros componentes la puedan invocar
       useImperativeHandle(ref, () => ({
@@ -94,7 +100,9 @@ const ResponsiveCanvas = forwardRef<ResponsiveCanvasRef, ResponsiveCanvasProps>(
       }));
 
       return (
+        
           <div style={{ width: "100%", maxWidth: "40rem" }}>
+            <p className="text-2xl m-2">Blueprint</p>
             <canvas
                 ref={canvasRef}
                 width={internalWidth}

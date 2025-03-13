@@ -32,23 +32,24 @@ export default function GetBluePrints({ setBlueprints }: GetBluePrintsProps) {
   };
 
   return (
-    <div className='flex items-center gap-[4rem]' >
-      <Chip variant='light' >Author</Chip>
-      <Form onSubmit={handleSubmit} >
-        <Input
-            className='m-2 pl-8 mr-12 sm:pl-2'
-            isRequired
-            errorMessage="Enter a valid author"
-            name="author"
-            placeholder="Enter the Author"
-            type="text"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-          />
-      <Button className='m-2 pl-8 mr-12 sm:pl-2' color='primary' variant='shadow' endContent type='submit'>
-        Get blueprints
-      </Button>
-    </Form>
-    </div>
+    <div className="flex items-center gap-[1rem]">
+  <Chip variant="light" className="self-start pt-[1.8rem]">Author</Chip>
+  <Form onSubmit={handleSubmit}>
+    <Input
+      className="m-2 pl-8 mr-12 sm:pl-2"
+      isRequired
+      errorMessage="Enter a valid author"
+      name="author"
+      placeholder="Enter the Author"
+      type="text"
+      value={author}
+      onChange={(e) => setAuthor(e.target.value)}
+    />
+    <Button className="m-2 pl-8 mr-12 sm:pl-2" color="primary" variant="shadow" endContent type="submit">
+      Get blueprints
+    </Button>
+  </Form>
+</div>
+
   );
 }
