@@ -3,6 +3,84 @@
 
 ## Construción de un cliente 'grueso' con un API REST, HTML5, Javascript y CSS3. Parte I.
 
+### Como correr el proyecto?
+
+> [!IMPORTANT]  
+> Para hacer este laboratorio se usó el servicio de backend que se continúo del laboratorio 5, se tuvo que modificar la configuración de CORS para establecer la conexión y se agregaron más planos para poder pintar.
+> repositorio de back-end: https://github.com/Luk3-Industries/ARSW-Back-Blueprints
+> Para correr el programa se debe usar pnpm install, luego pnpm build y pnpm start.
+
+## Requisitos previos
+
+Asegúrate de tener instalados los siguientes componentes en tu sistema:
+
+- **Java 17** o superior
+- **Maven**
+- **Node.js** (con `pnpm` instalado globalmente)
+[instalación de pnpm](https://pnpm.io/installation) o en caso de tener npm ya instalado (npm install -g pnpm
+  )
+
+
+## Instrucciones de ejecución
+
+### 1. Ejecutar el Backend (Spring Boot)
+
+1. Navega al directorio del backend.
+
+2. Ejecuta los siguientes comandos:
+
+   ```sh
+   mvn clean install package
+   java -jar target/*.jar
+   ```
+
+3. El backend debería estar corriendo en `http://localhost:8080` por defecto.
+
+### 2. Ejecutar el Frontend (Vite + pnpm)
+
+1. Navega al directorio del frontend.
+
+2. Instala las dependencias con:
+
+   ```sh
+   pnpm install
+   ```
+
+3. Construye el proyecto:
+
+   ```sh
+   pnpm build
+   ```
+
+4. Inicia el servidor de desarrollo:
+
+   ```sh
+   pnpm start
+   ```
+
+5. Una vez iniciado, abre en tu navegador el enlace generado por Vite, que suele ser `http://localhost:5173`.
+
+## Imagenes
+### Vista principal"
+![casa](img/casa.jpeg)
+![carro](img/carro.jpeg)
+Usuarios de pruebas:
+- leonardo
+- manuel
+- sofia
+- maria
+- luis
+
+Nota: las imágenes fueron tomadas con la pantalla minimizada para comprobar el diseño responsivo, sin embargo, la distribución se ve mejor en pantalla completa.
+## Pruebas
+
+Para realizar pruebas, puedes utilizar los siguientes usuarios de prueba:
+
+
+
+
+
+
 ### Trabajo individual o en parejas. A quienes tuvieron malos resultados en el parcial anterior se les recomienda hacerlo individualmente.
 
 ![](img/mock.png)
