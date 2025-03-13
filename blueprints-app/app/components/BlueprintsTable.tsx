@@ -1,8 +1,12 @@
 import { Button } from "@heroui/react";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@heroui/table";
 import type { Blueprint } from "~/services/blueprintService";
-export default function BlueprintsTable(props: { blueprints:Blueprint[] }) {
-  const blueprints = props.blueprints;  
+interface BlueprintsTableProps {
+  blueprints: Blueprint[];
+  onOpen: (bp: Blueprint) => void;
+}
+
+export default function BlueprintsTable({ blueprints, onOpen }: BlueprintsTableProps) {
   return (    
     <Table 
     aria-label="Example static collection table" 
@@ -25,7 +29,7 @@ export default function BlueprintsTable(props: { blueprints:Blueprint[] }) {
                 fullWidth
                 color="primary"
                 variant="bordered"
-                onPress={() => console.log(bp.points)}
+                onPress={() => onOpen(bp)}
               >Open
               </Button>
             </TableCell>

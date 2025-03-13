@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import type { MetaFunction } from "@remix-run/node";
-import ResponsiveCanvas from "~/components/ResponsiveCanvas";
+import ResponsiveCanvas, { type ResponsiveCanvasRef } from "~/components/ResponsiveCanvas";
 import Header from "~/components/Header";
 import GetBluePrints from "~/components/BluePrints";
 import BlueprintsTable from "~/components/BlueprintsTable";
+import type { Blueprint } from "~/services/blueprintService";
 
 export const meta: MetaFunction = () => {
   return [
@@ -14,6 +15,13 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   const [blueprints, setBlueprints] = useState<Blueprint[]>([]);
+  const canvasRef = useRef<ResponsiveCanvasRef>(null);
+  const handleOpenBlueprint = (bp: Blueprint) => {
+    if (canvasRef.current) {
+      canvasRef.current.updateCanvas(bp.author, bp.name);
+    }
+  };
+
   return (
   <div className="flex flex-col h-screen font-caveat">
   <header>
@@ -27,12 +35,12 @@ export default function Index() {
     <div className="grid grid-cols-1 md:grid-cols-2 w-full mx-auto p-2 m-1 gap-4">
       <section className="bg-blue-100 p-4 sm:p-2">
         <div className="m-10 p-8 sm:m-4 sm:p-4">
-        <BlueprintsTable  blueprints={blueprints}/>
+        <BlueprintsTable blueprints={blueprints} onOpen={handleOpenBlueprint} />
         </div>
       </section>
       <section className="bg-blue-100 p-4 sm:p-2">
         <p>Contenido Derecho</p>
-        <ResponsiveCanvas />
+        <ResponsiveCanvas ref={canvasRef} />
       </section>
     </div>
   </main>
