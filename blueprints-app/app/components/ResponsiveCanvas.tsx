@@ -1,6 +1,7 @@
 import { Button } from "@heroui/button";
 import React, { useRef, useState, useEffect, useImperativeHandle, forwardRef } from "react";
 import { fetchBlueprint, Blueprint } from "../services/blueprintService"; // Importa la función
+import CreateBlueprint from "~/components/Createblueprint";
 
 interface ResponsiveCanvasProps {
   internalWidth?: number;
@@ -102,6 +103,7 @@ const ResponsiveCanvas = forwardRef<ResponsiveCanvasRef, ResponsiveCanvasProps>(
       return (
         
           <div style={{ width: "100%", maxWidth: "40rem" }}>
+            <CreateBlueprint />
             <p className="text-2xl m-2">Blueprint</p>
             <canvas
                 ref={canvasRef}
@@ -122,6 +124,7 @@ const ResponsiveCanvas = forwardRef<ResponsiveCanvasRef, ResponsiveCanvasProps>(
               <Button color="primary" variant="shadow" onPress={handleClear}>
                 Limpiar
               </Button>
+              
             </div>
           </div>
       );

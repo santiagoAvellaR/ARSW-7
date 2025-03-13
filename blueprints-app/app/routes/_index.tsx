@@ -1,10 +1,11 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import type { MetaFunction } from "@remix-run/node";
 import ResponsiveCanvas, { type ResponsiveCanvasRef } from "~/components/ResponsiveCanvas";
 import Header from "~/components/Header";
 import GetBluePrints from "~/components/BluePrints";
 import BlueprintsTable from "~/components/BlueprintsTable";
 import type { Blueprint } from "~/services/blueprintService";
+
 
 export const meta: MetaFunction = () => {
   return [

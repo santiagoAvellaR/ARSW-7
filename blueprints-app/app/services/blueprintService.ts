@@ -38,3 +38,16 @@ export function fetchBlueprints(author:string):Promise<Blueprint[]> {
         });
     });
 }
+
+export function createBlueprint(data: Blueprint): Promise<void> {
+    return new Promise((resol, reje)  => {
+        $.ajax({
+            url: API_URL,
+            method: "POST",
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            success: () => resol(),
+            error: (xhr, status, error) => reje(new Error(`Error while creating blueprint: ${error}`)),
+        })
+    });
+}
