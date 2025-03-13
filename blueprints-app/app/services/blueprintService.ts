@@ -26,3 +26,15 @@ export function fetchBlueprint(author: string, bpname: string): Promise<Blueprin
         });
     });
 }
+
+export function fetchBlueprints(author:string):Promise<Blueprint[]> {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: `${API_URL}/${author}`,
+            method: "GET",
+            dataType: "json",
+            success: (data:Blueprint[]) => resolve(data),
+            error: (xhr, status, error) => reject(new Error(`Error fetching blueprint: ${error}`)),
+        });
+    });
+}

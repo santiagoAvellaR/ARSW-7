@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import type { MetaFunction } from "@remix-run/node";
 import ResponsiveCanvas from "~/components/ResponsiveCanvas";
 import Header from "~/components/Header";
@@ -12,13 +13,7 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
-  const blueprints = new Map<string, string>([
-    ['William Howard', '784'],
-    ['Jose', '1000'],
-    ['Miguel', '2000'],
-    ['Mock 1', '100'],
-    ['Mock 2', '200'],
-  ]);
+  const [blueprints, setBlueprints] = useState<Blueprint[]>([]);
   return (
   <div className="flex flex-col h-screen font-caveat">
   <header>
@@ -27,7 +22,7 @@ export default function Index() {
   <main className="flex-1 w-full bg-blue-100 text-black overflow-auto">
     <div className="p-16 ml-8 pb-8 pt-10 sm:p-4">
       <p className="m-2 pl-8 sm:pl-2 text-2xl">BluePrints</p>
-      <GetBluePrints />
+      <GetBluePrints setBlueprints={setBlueprints} />
     </div>
     <div className="grid grid-cols-1 md:grid-cols-2 w-full mx-auto p-2 m-1 gap-4">
       <section className="bg-blue-100 p-4 sm:p-2">

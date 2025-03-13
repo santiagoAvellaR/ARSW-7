@@ -1,6 +1,7 @@
 import { Button } from "@heroui/react";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@heroui/table";
-export default function BlueprintsTable(props: { blueprints:Map<string, string> }) {
+import type { Blueprint } from "~/services/blueprintService";
+export default function BlueprintsTable(props: { blueprints:Blueprint[] }) {
   const blueprints = props.blueprints;  
   return (    
     <Table 
@@ -15,14 +16,17 @@ export default function BlueprintsTable(props: { blueprints:Map<string, string> 
         <TableColumn>View</TableColumn>
       </TableHeader>
       <TableBody>
-        {Array.from(blueprints.keys()).map((key) => (
-          <TableRow key={key}>
-            <TableCell>{key}</TableCell>
-            <TableCell>{blueprints.get(key)}</TableCell>
+      {blueprints.map((bp, index) => (
+          <TableRow key={index}>
+            <TableCell>{bp.name}</TableCell>
+            <TableCell>{bp.points.length}</TableCell>
             <TableCell>
-              <Button fullWidth
-              color="primary"
-              variant="bordered" >Open
+            <Button 
+                fullWidth
+                color="primary"
+                variant="bordered"
+                onPress={() => console.log(bp.points)}
+              >Open
               </Button>
             </TableCell>
           </TableRow>
@@ -31,15 +35,3 @@ export default function BlueprintsTable(props: { blueprints:Map<string, string> 
     </Table>
   );
 }
-
-/**
-<TableRow key="4">
-          <TableCell>William Howard</TableCell>
-          <TableCell>784</TableCell>
-          <TableCell><Button fullWidth
-          color="primary"
-          variant="bordered" >Open
-          </Button></TableCell>
-        </TableRow>
-      </TableBody>
-*/
