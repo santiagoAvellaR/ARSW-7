@@ -1,130 +1,123 @@
 import { Button } from "@heroui/button";
-import type React from "react";
-import { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useImperativeHandle, forwardRef } from "react";
+import { fetchBlueprint, Blueprint } from "../services/blueprintService"; // Importa la función
 
 interface ResponsiveCanvasProps {
-  // Resolución "interna" del canvas (puedes ajustarla según tu gusto)
   internalWidth?: number;
   internalHeight?: number;
-
-  // Callback opcional para cuando el usuario guarde el dibujo
   onSave?: (dataUrl: string) => void;
-
-  // DataURL de un dibujo guardado, para re-pintarlo
   initialDrawing?: string;
 }
 
-const ResponsiveCanvas: React.FC<ResponsiveCanvasProps> = ({
-  internalWidth = 800,
-  internalHeight = 600,
-  onSave,
-  initialDrawing
-}) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
-  const [isDrawing, setIsDrawing] = useState(false);
+export interface ResponsiveCanvasRef {
+  updateCanvas: (author: string, bpname: string) => void;
+}
 
-  // 1. Inicializamos el contexto
-  useEffect(() => {
-    if (canvasRef.current) {
-      const context = canvasRef.current.getContext("2d");
-      if (context) {
-        context.lineWidth = 2;
-        context.lineCap = "round";
-        context.strokeStyle = "#000";
-        setCtx(context);
-      }
-    }
-  }, []);
+const ResponsiveCanvas = forwardRef<ResponsiveCanvasRef, ResponsiveCanvasProps>(
+    ({ internalWidth = 800, internalHeight = 600 }, ref) => {
+      const canvasRef = useRef<HTMLCanvasElement>(null);
+      const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
+      const [isDrawing, setIsDrawing] = useState(false);
 
-  // 2. Pintar un dibujo inicial (si viene por props)
-  useEffect(() => {
-    if (initialDrawing && ctx) {
-      const image = new Image();
-      image.src = initialDrawing;
-      image.onload = () => {
-        ctx.drawImage(image, 0, 0);
+      useEffect(() => {
+        if (canvasRef.current) {
+          const context = canvasRef.current.getContext("2d");
+          if (context) {
+            context.lineWidth = 2;
+            context.lineCap = "round";
+            context.strokeStyle = "#000";
+            setCtx(context);
+          }
+        }
+      }, []);
+
+      const getRelativeCoords = (e: React.MouseEvent<HTMLCanvasElement>) => {
+        if (!canvasRef.current) return { x: 0, y: 0 };
+        const rect = canvasRef.current.getBoundingClientRect();
+        const scaleX = canvasRef.current.width / rect.width;
+        const scaleY = canvasRef.current.height / rect.height;
+        return {
+          x: (e.clientX - rect.left) * scaleX,
+          y: (e.clientY - rect.top) * scaleY,
+        };
       };
+
+      const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
+        if (!ctx) return;
+        setIsDrawing(true);
+        const { x, y } = getRelativeCoords(e);
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+      };
+
+      const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
+        if (!isDrawing || !ctx) return;
+        const { x, y } = getRelativeCoords(e);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+      };
+
+      const handleMouseUp = () => {
+        setIsDrawing(false);
+        ctx?.closePath();
+      };
+
+      const handleClear = () => {
+        if (!ctx || !canvasRef.current) return;
+        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+      };
+
+      // Función para actualizar el canvas con el blueprint obtenido
+      const updateCanvas = async (author: string, bpname: string) => {
+        if (!ctx || !canvasRef.current) return;
+        try {
+          const blueprint: Blueprint = await fetchBlueprint(author, bpname);
+          ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+          if (blueprint.points.length > 0) {
+            ctx.beginPath();
+            ctx.moveTo(blueprint.points[0].x, blueprint.points[0].y);
+            // Dibuja línea recta entre cada punto (uno a uno)
+            blueprint.points.forEach(({ x, y }) => {
+              ctx.lineTo(x, y);
+            });
+            ctx.stroke();
+            ctx.closePath();
+          }
+        } catch (error) {
+          console.error("Error loading blueprint:", error);
+        }
+      };
+
+      // Exponemos la función updateCanvas para que otros componentes la puedan invocar
+      useImperativeHandle(ref, () => ({
+        updateCanvas,
+      }));
+
+      return (
+          <div style={{ width: "100%", maxWidth: "40rem" }}>
+            <canvas
+                ref={canvasRef}
+                width={internalWidth}
+                height={internalHeight}
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  border: "1px solid #ccc",
+                  cursor: "crosshair",
+                }}
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={() => setIsDrawing(false)}
+            />
+            <div className="mt-5 flex gap-[1rem]">
+              <Button color="primary" variant="shadow" onPress={handleClear}>
+                Limpiar
+              </Button>
+            </div>
+          </div>
+      );
     }
-  }, [initialDrawing, ctx]);
-
-  // Función auxiliar para obtener coords ajustadas al escalado
-  const getRelativeCoords = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!canvasRef.current) return { x: 0, y: 0 };
-    const rect = canvasRef.current.getBoundingClientRect();
-    // Factor de escala entre el tamaño "interno" y el tamaño "visual"
-    const scaleX = canvasRef.current.width / rect.width;
-    const scaleY = canvasRef.current.height / rect.height;
-
-    return {
-      x: (e.clientX - rect.left) * scaleX,
-      y: (e.clientY - rect.top) * scaleY,
-    };
-  };
-
-  // 3. Inicio de trazo
-  const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!ctx) return;
-    setIsDrawing(true);
-
-    const { x, y } = getRelativeCoords(e);
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-  };
-
-  // 4. Dibujo continuo
-  const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!isDrawing || !ctx) return;
-    const { x, y } = getRelativeCoords(e);
-    ctx.lineTo(x, y);
-    ctx.stroke();
-  };
-
-  // 5. Fin del trazo
-  const handleMouseUp = () => {
-    setIsDrawing(false);
-    ctx?.closePath();
-  };
-
-  // 6. Guardar el dibujo como DataURL
-  const handleSave = () => {
-    if (!canvasRef.current) return;
-    const dataUrl = canvasRef.current.toDataURL("image/png");
-    onSave?.(dataUrl);
-  };
-
-  // 7. Limpiar el lienzo
-  const handleClear = () => {
-    if (!ctx || !canvasRef.current) return;
-    ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-  };
-
-  return (
-    <div style={{ width: "100%", maxWidth: '40rem' /* o lo que desees */ }}>
-      <canvas
-        ref={canvasRef}
-        // El "tamaño interno" del canvas (resolución)
-        width={internalWidth}
-        height={internalHeight}
-        // Escalado visual: ancho completo, alto automático
-        style={{ 
-          width: "100%", 
-          height: "auto", 
-          border: "1px solid #ccc", 
-          cursor: "crosshair" 
-        }}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={() => setIsDrawing(false)}
-      />
-
-      <div className="mt-5 flex gap-[2rem]">
-        <Button color='primary' variant='shadow' onPress={handleSave}>Guardar</Button>
-        <Button color='primary' variant='shadow' onPress={handleClear}>Limpiar</Button>
-      </div>
-    </div>
-  );
-};
+);
 
 export default ResponsiveCanvas;
