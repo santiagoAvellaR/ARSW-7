@@ -6,8 +6,8 @@ import BlueprintsTable from "~/components/BlueprintsTable";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: "BluePrints App" },
+    { name: "description", content: "Welcome to BluePrints App!" },
   ];
 };
 
