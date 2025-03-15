@@ -31,13 +31,13 @@ export default function CreateBlueprint() {
     createData({
       author: formData.author?.toString() || "",
       bpname: formData.bpname?.toString() || ""
-    }, onClose);
+    })
+    onClose();
   };
 
   return (
     <>
       <div className="flex flex-wrap gap-3">
-        
           <Button
             key={buttonInfo}
             className="capitalize"
@@ -88,7 +88,11 @@ export default function CreateBlueprint() {
   );
 }
 
-async function createData(data: { author: string; bpname: string; }, onClose: () => void) {
+function spawnAlert(message: string, type: "success" | "danger") {
+  console.log(`Debería lanzar una alerta: ${message} ${type}`)
+}
+
+async function createData(data: { author: string; bpname: string; }) {
   
   const currentPoints: Point[] = [{x:1,y:1}, {x:2,y:2}, {x:3,y:3}]; // Mocked data
 
@@ -97,8 +101,12 @@ async function createData(data: { author: string; bpname: string; }, onClose: ()
     author: data.author,
     points: currentPoints
   }
-  console.log(`Here it should post the current Blueprint on the Canvas ${JSON.stringify(bp)}`)
-  await createBlueprint(bp);
-  onClose();
-  
+
+  createBlueprint(bp).then(() => {
+    spawnAlert("Blueprint created successfully", 'success');
+  }).catch(
+    (error) => {
+      spawnAlert(error.message, 'danger');
+    }
+  );
 }
