@@ -36,7 +36,7 @@ export default function Index() {
     <div className="grid grid-cols-1 md:grid-cols-2 w-full mx-auto p-2 m-1 gap-4">
       <section className="bg-blue-100 p-4 sm:p-2">
         <div className="m-10 p-8 sm:m-4 sm:p-4">
-        <BlueprintsTable blueprints={blueprints} onOpen={handleOpenBlueprint} />
+        <BlueprintsTable blueprints={blueprints} onOpen={handleOpenBlueprint}/>
         </div>
       </section>
       <section className="bg-blue-100 p-4 sm:p-2">
