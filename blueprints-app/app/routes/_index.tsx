@@ -1,10 +1,11 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import type { MetaFunction } from "@remix-run/node";
 import ResponsiveCanvas, { type ResponsiveCanvasRef } from "~/components/ResponsiveCanvas";
 import Header from "~/components/Header";
 import GetBluePrints from "~/components/BluePrints";
 import BlueprintsTable from "~/components/BlueprintsTable";
 import type { Blueprint } from "~/services/blueprintService";
+
 
 export const meta: MetaFunction = () => {
   return [
@@ -35,7 +36,7 @@ export default function Index() {
     <div className="grid grid-cols-1 md:grid-cols-2 w-full mx-auto p-2 m-1 gap-4">
       <section className="bg-blue-100 p-4 sm:p-2">
         <div className="m-10 p-8 sm:m-4 sm:p-4">
-        <BlueprintsTable blueprints={blueprints} onOpen={handleOpenBlueprint} />
+        <BlueprintsTable blueprints={blueprints} onOpen={handleOpenBlueprint}/>
         </div>
       </section>
       <section className="bg-blue-100 p-4 sm:p-2">

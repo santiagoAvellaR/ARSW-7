@@ -38,3 +38,40 @@ export function fetchBlueprints(author:string):Promise<Blueprint[]> {
         });
     });
 }
+
+export function createBlueprint(data: Blueprint): Promise<void> {
+    return new Promise((resol, reje)  => {
+        $.ajax({
+            url: API_URL,
+            method: "POST",
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            success: () => resol(),
+            error: (xhr, status, error) => reje(new Error(`Error while creating blueprint: ${error}`)),
+        })
+    });
+}
+
+export function deleteBlueprint(author: string, bpname: string): Promise<void> {
+    return new Promise((resol, reje) => {
+        $.ajax({
+            url: `${API_URL}/${author}/${bpname}`,
+            method: "DELETE",
+            success: () => resol(),
+            error: (xhr, status, error) => reje(new Error(`Error while deleting blueprint: ${error}`)),
+        });
+    });
+}
+
+export function updateBlueprint(data: Blueprint): Promise<void> {
+    return new Promise((resol, reje) => {
+        $.ajax({
+            url: `${API_URL}/${data.author}/${data.name}`,
+            method: "PUT",
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            success: () => resol(),
+            error: (xhr, status, error) => reje(new Error(`Error while updating blueprint: ${error}`)),
+        });
+    });
+}
