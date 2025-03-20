@@ -137,7 +137,7 @@ const ResponsiveCanvas = forwardRef<ResponsiveCanvasRef, ResponsiveCanvasProps>(
           <Button color="success" onPress={ async () => {
             const bp = getCurrentBlueprint();
             if (bp) {
-              await updateBlueprint(bp);
+              await updateBlueprint({ ...bp, points: bp.points.concat(getDrawnPoints()) });
             } else {
               alert("No blueprint selected, please select one from the table or create one.");
             }
