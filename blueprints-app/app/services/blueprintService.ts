@@ -64,8 +64,6 @@ export function deleteBlueprint(author: string, bpname: string): Promise<void> {
 }
 
 export function updateBlueprint(data: Blueprint): Promise<void> {
-    console.log(data);
-    console.log(JSON.stringify(data));
     return new Promise((resol, reje) => {
         $.ajax({
             url: `${API_URL}/${data.author}/${data.name}`,

@@ -74,7 +74,6 @@ const ResponsiveCanvas = forwardRef<ResponsiveCanvasRef, ResponsiveCanvasProps>(
 
     const handleClear = () => {
       if (!ctx || !canvasRef.current) return;
-      console.log(points);
       ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
       setPoints([]);
     };
