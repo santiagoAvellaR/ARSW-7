@@ -62,19 +62,30 @@ Asegúrate de tener instalados los siguientes componentes en tu sistema:
 
 ## Imagenes
 ### Vista principal"
-![casa](img/casa.jpeg)
-![carro](img/carro.jpeg)
+Consultar y pintar
+![consultar y pintar](img/manuel1.png)
+Dibujar sobre el canvas
+![dibujar](img/manuel1.png)
+Salvar y limpiar el canvas
+![salvar y limpiar el canvas](img/manuel1.png)
+Consultar y repintar nuevamente
+![consultar y pintar nuevamente](img/manuel1.png)
+Eliminar un plano
+![eliminar](img/manuel1.png)
+Consultar el plano eliminado
+![consultar el eliminado](img/manuel1.png)
+
+
+Nota: las imágenes fueron tomadas con la pantalla minimizada para comprobar el diseño responsivo, sin embargo, la distribución se ve mejor en pantalla completa.
+## Pruebas
+
+Para realizar pruebas, puedes utilizar los siguientes usuarios de prueba:
 Usuarios de pruebas:
 - leonardo
 - manuel
 - sofia
 - maria
 - luis
-
-Nota: las imágenes fueron tomadas con la pantalla minimizada para comprobar el diseño responsivo, sin embargo, la distribución se ve mejor en pantalla completa.
-## Pruebas
-
-Para realizar pruebas, puedes utilizar los siguientes usuarios de prueba:
 
 
 
