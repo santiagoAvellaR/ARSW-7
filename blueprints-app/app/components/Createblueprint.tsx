@@ -12,7 +12,11 @@ import {
 } from "@heroui/react";
 import { type Blueprint, createBlueprint, type Point } from "~/services/blueprintService";
 
-export default function CreateBlueprint() {
+interface CreateBlueprintProps {
+  getCoordinates: () => Point[];
+}
+
+export default function CreateBlueprint({ getCoordinates }: CreateBlueprintProps) {
   const {isOpen, onOpen, onClose} = useDisclosure();
   const [backdrop, setBackdrop] = React.useState<"opaque" | "blur" | "transparent" | undefined>("opaque");
 
@@ -31,7 +35,7 @@ export default function CreateBlueprint() {
     createData({
       author: formData.author?.toString() || "",
       bpname: formData.bpname?.toString() || ""
-    })
+    }, getCoordinates);
     onClose();
   };
 
@@ -92,10 +96,8 @@ function spawnAlert(message: string, type: "success" | "danger") {
   console.log(`Debería lanzar una alerta: ${message} ${type}`)
 }
 
-async function createData(data: { author: string; bpname: string; }) {
-  
-  const currentPoints: Point[] = [{x:1,y:1}, {x:2,y:2}, {x:3,y:3}]; // Mocked data
-
+async function createData(data: { author: string; bpname: string; }, getCoordinates: () => Point[]) {
+  const currentPoints: Point[] = getCoordinates();
   const bp:Blueprint = {
     name: data.bpname,
     author: data.author,

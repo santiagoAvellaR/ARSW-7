@@ -108,7 +108,7 @@ const ResponsiveCanvas = forwardRef<ResponsiveCanvasRef, ResponsiveCanvasProps>(
 
     return (
       <div style={{ width: "100%", maxWidth: "40rem" }}>
-        <CreateBlueprint />
+        <CreateBlueprint getCoordinates={getDrawnPoints} />
         <p className="text-2xl m-2">Blueprint</p>
         <canvas
           ref={canvasRef}
