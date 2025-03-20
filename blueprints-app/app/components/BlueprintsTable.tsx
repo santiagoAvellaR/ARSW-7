@@ -9,6 +9,16 @@ interface BlueprintsTableProps {
   onOpen: (bp: Blueprint) => void;
 }
 
+let currentBlueprint: Blueprint | null = null;
+
+export function setCurrentBlueprint(bp: Blueprint) {
+  currentBlueprint = bp;
+}
+
+export function getCurrentBlueprint(): Blueprint | null {
+  return currentBlueprint;
+}
+
 export default function BlueprintsTable({ blueprints, onOpen }: BlueprintsTableProps) {
   const [localBlueprints, setLocalBlueprints] = useState<Blueprint[]>(blueprints);
 
@@ -23,6 +33,12 @@ export default function BlueprintsTable({ blueprints, onOpen }: BlueprintsTableP
       prev.filter((item) => item.author !== bp.author || item.name !== bp.name)
     );
   };
+
+  const handleOpen = (bp: Blueprint) => {
+    setCurrentBlueprint(bp);
+    onOpen(bp);
+  }
+
 
   return (
     <Table aria-label="Blueprints table" isStriped color="primary" selectionMode="single">
@@ -41,7 +57,7 @@ export default function BlueprintsTable({ blueprints, onOpen }: BlueprintsTableP
                 fullWidth
                 color="primary"
                 variant="bordered"
-                onPress={() => onOpen(bp)}
+                onPress={() => handleOpen(bp)}
               >
                 Open
               </Button>

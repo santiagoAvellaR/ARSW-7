@@ -1,7 +1,10 @@
 import { Button } from "@heroui/button";
-import React, { useRef, useState, useEffect, useImperativeHandle, forwardRef } from "react";
-import { fetchBlueprint, Blueprint } from "../services/blueprintService";
+import type React from "react";
+import { useRef, useState, useEffect, useImperativeHandle, forwardRef } from "react";
+import { fetchBlueprint, type Blueprint } from "../services/blueprintService";
 import CreateBlueprint from "~/components/Createblueprint";
+import { getCurrentBlueprint } from "./BlueprintsTable";
+import { updateBlueprint } from "../services/blueprintService";
 
 interface ResponsiveCanvasProps {
   internalWidth?: number;
@@ -9,6 +12,8 @@ interface ResponsiveCanvasProps {
   onSave?: (dataUrl: string) => void;
   initialDrawing?: string;
 }
+
+
 
 export interface ResponsiveCanvasRef {
   updateCanvas: (author: string, bpname: string) => void;
@@ -127,7 +132,17 @@ const ResponsiveCanvas = forwardRef<ResponsiveCanvasRef, ResponsiveCanvasProps>(
         />
         <div className="mt-5 flex gap-[1rem]">
           <Button color="primary" variant="shadow" onPress={handleClear}>
-            Limpiar
+            Clean
+          </Button>
+          <Button color="success" onPress={ async () => {
+            const bp = getCurrentBlueprint();
+            if (bp) {
+              await updateBlueprint(bp.author, bp.name, getDrawnPoints());
+            } else {
+              alert("No blueprint selected, please select one from the table or create one.");
+            }
+          }}>
+            Save / Update
           </Button>
         </div>
       </div>
