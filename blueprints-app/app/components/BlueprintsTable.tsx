@@ -1,48 +1,58 @@
+import { useState, useEffect } from "react";
 import { Button } from "@heroui/react";
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@heroui/table";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@heroui/table";
 import type { Blueprint } from "~/services/blueprintService";
-import { deleteBlueprint} from "~/services/blueprintService";
+import { deleteBlueprint } from "~/services/blueprintService";
+
 interface BlueprintsTableProps {
   blueprints: Blueprint[];
   onOpen: (bp: Blueprint) => void;
 }
 
 export default function BlueprintsTable({ blueprints, onOpen }: BlueprintsTableProps) {
-  const onDelete =async (bp: Blueprint) => {
+  const [localBlueprints, setLocalBlueprints] = useState<Blueprint[]>(blueprints);
+
+  // Actualiza el estado local si la prop blueprints cambia
+  useEffect(() => {
+    setLocalBlueprints(blueprints);
+  }, [blueprints]);
+
+  const onDelete = async (bp: Blueprint) => {
     await deleteBlueprint(bp.author, bp.name);
-    
+    setLocalBlueprints((prev) =>
+      prev.filter((item) => item.author !== bp.author || item.name !== bp.name)
+    );
   };
-  return (    
-    <Table 
-    aria-label="Example static collection table" 
-    isStriped color="primary"
-    selectionMode="single"
-    
-    >
+
+  return (
+    <Table aria-label="Blueprints table" isStriped color="primary" selectionMode="single">
       <TableHeader>
         <TableColumn>Blueprint Name</TableColumn>
         <TableColumn>Number of points</TableColumn>
-        <TableColumn>View</TableColumn>
+        <TableColumn>Actions</TableColumn>
       </TableHeader>
       <TableBody>
-      {blueprints.map((bp, index) => (
-          <TableRow key={index}>
+        {localBlueprints.map((bp) => (
+          <TableRow key={`${bp.author}-${bp.name}`}>
             <TableCell>{bp.name}</TableCell>
             <TableCell>{bp.points.length}</TableCell>
             <TableCell>
-            <Button 
+              <Button
                 fullWidth
                 color="primary"
                 variant="bordered"
                 onPress={() => onOpen(bp)}
-              >Open
+              >
+                Open
               </Button>
-              <Button className="mt-5"
+              <Button
+                className="mt-5"
                 fullWidth
                 color="danger"
                 variant="bordered"
                 onPress={() => onDelete(bp)}
-              >Delete
+              >
+                Delete
               </Button>
             </TableCell>
           </TableRow>
